@@ -1,0 +1,23 @@
+{
+    "svelte-autoimport.autoComplete": true,
+    "svelte-autoimport.useSemiColon": true,
+    "svelte.enable-ts-plugin": true,
+    "svelte.plugin.svelte.defaultScriptLanguage": "ts",
+    "svelte.plugin.typescript.completions.enable": true,
+    "svelte.plugin.typescript.enable": true,
+    "svelte.plugin.typescript.signatureHelp.enable": true,
+    "svelte.plugin.svelte.format.config.svelteStrictMode": true,
+    "files.associations": {
+        "*.pcss": "tailwindcss"
+    },
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "**/Thumbs.db": true,
+        "**/.svelte-kit": true,
+        "**/node_modules": true,
+    }
+}

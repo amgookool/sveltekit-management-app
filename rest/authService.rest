@@ -1,0 +1,40 @@
+@base_url = http://192.168.100.239:8001/auth
+
+# @name login
+POST {{base_url}}/login
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "P@ssword123!!"
+}
+###
+
+@accessToken = {{login.response.body.$.accessToken}}
+@refreshToken = {{login.response.body.$.refreshToken}}
+
+# @name refresh
+POST {{base_url}}/refresh
+Content-Type: application/json
+
+{
+  "refresh_token": "{{refreshToken}}"
+}
+###
+
+# @name logout
+POST {{base_url}}/logout
+Content-Type: application/json
+
+{
+  "refresh_token": "{{refreshToken}}"
+}
+###
+
+# @name password_reset
+POST {{base_url}}/password-reset
+Content-Type: application/json
+
+{
+  "email": "amgookool@gmail.com"
+}
