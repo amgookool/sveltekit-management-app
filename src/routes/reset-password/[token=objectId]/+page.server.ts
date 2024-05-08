@@ -32,13 +32,19 @@ const resetPasswordUpdateFormSchema = z
 			})
 			.min(1, { message: 'Confirm password is required' })
 			.min(8, { message: 'Confirm Password must be at least 8 characters' })
-			.regex(new RegExp('^(?=.*[0-9])$'), { message: 'Password must contain a number' })
-			.regex(new RegExp('^(?=.*[A-Z])$'), { message: 'Password must contain an uppercase letter' })
-			.regex(new RegExp('^(?!.*\\s)$'), { message: 'Password must not contain any whitespace' })
-			.regex(new RegExp('^(?=.*[@#$%^&+=!])$'), {
-				message: 'Password must contain a special character'
-			})
 			.trim()
+			.refine((value) => /^(?=.*[0-9])$/.test(value), 
+				'Confirm password must contain a number'
+			)
+			.refine((value) => /^(?=.*[A-Z])$/.test(value), 
+				'Confirm password must contain an uppercase letter'
+			)
+			.refine((value) => /^(?!.*\\s)$/.test(value), 
+				'Confirm password must not contain any whitespace'
+			)
+			.refine((value) => /^(?=.*[@#$%^&+=!])$/.test(value), 
+				'Confirm password must contain a special character'
+			)
 	})
 	.superRefine(({ password, confirmPassword }, ctx: z.RefinementCtx) => {
 		if (password != confirmPassword) {

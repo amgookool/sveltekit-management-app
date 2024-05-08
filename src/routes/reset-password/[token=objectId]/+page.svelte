@@ -1,20 +1,17 @@
 <script lang="ts">
-	import { Button } from '$lib/components/ui/button/index.js';
-	import * as Card from '$lib/components/ui/card/index.js';
-	import { Input } from '$lib/components/ui/input/index.js';
-	import { Label } from '$lib/components/ui/label/index.js';
+	import { Button } from '$lib/components/ui/button';
+	import * as Card from '$lib/components/ui/card';
+	import { Input } from '$lib/components/ui/input';
+	import { Label } from '$lib/components/ui/label';
 	import { cn } from '@/utils';
 	import type { ActionData, PageData } from './$types';
 	import { enhance } from '$app/forms';
 	import { ArrowLeftToLine, CircleAlert } from 'lucide-svelte';
 	import { toast } from 'svelte-sonner';
 	import { goto } from '$app/navigation';
-	import Alert from '@/components/ui/alert/alert.svelte';
 
 	export let data: PageData;
 	export let form: ActionData;
-
-
 
 	$: if (form?.error) {
 		toast.error(form?.error);
@@ -58,7 +55,12 @@
 					</div>
 					<div class="flex flex-col space-y-3">
 						<Label for="confirmPassword">Confirm Password</Label>
-						<Input type="text" name="confirmPassword" id="confirmPassword" placeholder="Confirm Password" />
+						<Input
+							type="text"
+							name="confirmPassword"
+							id="confirmPassword"
+							placeholder="Confirm Password"
+						/>
 						<Label for="confirmPasswordError" class={cn('flex items-center gap-1 text-xs')}>
 							{#if form?.errors?.confirmPassword}
 								<div class="flex flex-col">
