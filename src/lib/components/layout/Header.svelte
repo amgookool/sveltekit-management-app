@@ -1,4 +1,5 @@
 <script lang="ts">
+	import ThemeSwitcher from '$lib/components/layout/ThemeSwitcher.svelte';
 	import { Badge } from '$lib/components/ui/badge/index.js';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
@@ -55,20 +56,27 @@
 			</div>
 		</form>
 	</div>
-	<DropdownMenu.Root>
-		<DropdownMenu.Trigger asChild let:builder>
-			<Button builders={[builder]} variant="secondary" size="icon" class="rounded-full">
-				<CircleUser class="h-5 w-5" />
-				<span class="sr-only">Toggle user menu</span>
-			</Button>
-		</DropdownMenu.Trigger>
-		<DropdownMenu.Content align="end">
-			<DropdownMenu.Label>My Account</DropdownMenu.Label>
-			<DropdownMenu.Separator />
-			<DropdownMenu.Item>Settings</DropdownMenu.Item>
-			<DropdownMenu.Item>Support</DropdownMenu.Item>
-			<DropdownMenu.Separator />
-			<DropdownMenu.Item>Logout</DropdownMenu.Item>
-		</DropdownMenu.Content>
-	</DropdownMenu.Root>
+	<div class="flex gap-2">
+		<ThemeSwitcher />
+		<DropdownMenu.Root>
+			<DropdownMenu.Trigger asChild let:builder>
+				<Button builders={[builder]} variant="secondary" size="icon" class="rounded-full">
+					<CircleUser class="h-5 w-5" />
+					<span class="sr-only">Toggle user menu</span>
+				</Button>
+			</DropdownMenu.Trigger>
+			<DropdownMenu.Content align="end">
+				<DropdownMenu.Label>My Account</DropdownMenu.Label>
+				<DropdownMenu.Separator />
+				<DropdownMenu.Item>Settings</DropdownMenu.Item>
+				<DropdownMenu.Item>Support</DropdownMenu.Item>
+				<DropdownMenu.Separator />
+				<DropdownMenu.Item>
+					<form action="?/logout" method="post">
+						<Button type="submit" size="icon" variant="ghost">Logout</Button>
+					</form>
+				</DropdownMenu.Item>
+			</DropdownMenu.Content>
+		</DropdownMenu.Root>
+	</div>
 </header>
