@@ -2,6 +2,7 @@
 	import Sidebar from '@/components/layout/Sidebar.svelte';
 	import { Home, LineChart, Package, ShoppingCart, Users } from 'lucide-svelte';
 	import Header from './../../lib/components/layout/Header.svelte';
+	import { sideBarToggleState, sideBarActiveState } from '@/components/layout/states';
 
 	const sidebar_nav_items = [
 		{
@@ -36,8 +37,8 @@
 		}
 	];
 </script>
-
-<div class="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
+<!--  -->
+<div class={`grid min-h-screen w-full duration-500 ${$sideBarToggleState ? 'md:grid-cols-[70px_1fr] lg:grid-cols-[130px_1fr]': 'md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]'}`}>
 	<Sidebar nav_links={sidebar_nav_items} />
 	<div class="flex flex-col space-x-2">
 		<Header nav_links={sidebar_nav_items} />
