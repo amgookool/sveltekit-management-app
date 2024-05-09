@@ -9,3 +9,5 @@
 	<meta name="description" content="Dashboard Page of management application" />
 	<meta name="robots" content="noindex, nofollow" />
 </svelte:head>
+
+<h1 class="text-6xl font-semibold">Hello World</h1>
