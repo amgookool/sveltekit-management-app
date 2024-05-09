@@ -72,7 +72,7 @@
 				<DropdownMenu.Item>Support</DropdownMenu.Item>
 				<DropdownMenu.Separator />
 				<DropdownMenu.Item>
-					<form action="?/logout" method="post">
+					<form action="/dashboard?/logout" method="post">
 						<Button type="submit" size="icon" variant="ghost">Logout</Button>
 					</form>
 				</DropdownMenu.Item>
