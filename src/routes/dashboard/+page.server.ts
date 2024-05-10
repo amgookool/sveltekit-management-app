@@ -13,6 +13,6 @@ export const actions: Actions = {
         const refresh_token = event.cookies.get('refresh_token');
         if (refresh_token)
             event.cookies.delete('refresh_token', { path: '/' });
-        throw redirect(301,'/login');
+        throw redirect(301, '/login');
     }
 }
