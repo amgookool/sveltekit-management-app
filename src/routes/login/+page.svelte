@@ -1,20 +1,22 @@
 <script lang="ts">
+	import { enhance } from '$app/forms';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import { Input } from '$lib/components/ui/input/index.js';
 	import { Label } from '$lib/components/ui/label/index.js';
 	import { cn } from '@/utils';
-	import type { ActionData, PageData } from './$types';
-	import { enhance } from '$app/forms';
 	import { CircleAlert, Github, RectangleEllipsis } from 'lucide-svelte';
 	import { toast } from 'svelte-sonner';
-	import { fade,slide } from 'svelte/transition';
+	import { slide } from 'svelte/transition';
+	import type { ActionData, PageData } from './$types';
 
 	export let data: PageData;
 	export let form: ActionData;
+
 	$: if (form?.error) {
 		toast.error(form?.error);
 	}
+
 </script>
 
 <svelte:head>
@@ -22,7 +24,10 @@
 	<meta name="description" content="Login Page for management application" />
 	<meta name="robots" content="noindex, nofollow" />
 </svelte:head>
-<div transition:slide={{ duration: 400, axis:'x' }} class="flex justify-center items-center h-screen">
+<div
+	transition:slide={{ duration: 400, axis: 'x' }}
+	class="flex justify-center items-center h-screen"
+>
 	<Card.Root class={cn('w-[380px]')}>
 		<Card.Header>
 			<img class={cn('px-2 py-4')} src="/logoipsum297.svg" alt="Logo" />

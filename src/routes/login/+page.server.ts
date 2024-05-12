@@ -1,7 +1,7 @@
 import { GITHUB_OAUTH_CLIENT_ID } from '$env/static/private';
 import { perform_login } from '@/services/authService';
 import type { UserTypes } from '@/types/users';
-import { fail, redirect } from '@sveltejs/kit';
+import { fail, redirect, } from '@sveltejs/kit';
 import { ZodError, z } from 'zod';
 import type { Actions, PageServerLoad, RequestEvent } from './$types';
 
@@ -15,13 +15,19 @@ const loginFormSchema = z.object({
 		.email({ message: 'Email must be a valid email address' }),
 	password: z
 		.string({
-            message: 'Password is required',
+			message: 'Password is required',
 			required_error: 'Password is required'
 		})
-        .min(1, { message: 'Password is required' })
+		.min(1, { message: 'Password is required' })
 		.min(8, { message: 'Password must be at least 8 characters.' })
 		.max(64, { message: 'Password must be at most 64 characters.' })
 		.trim()
+		.refine((value) => /[\W_]/.test(value),
+			'Password must contain a special character'
+		)
+		.refine((value) => /(?=.*[a-z])(?=.*[A-Z])/.test(value),
+			'Password must contain a capital letter'
+		)
 });
 
 const processLoginFormEvent = async (event: RequestEvent) => {
@@ -35,7 +41,6 @@ const processLoginFormEvent = async (event: RequestEvent) => {
 		};
 	} catch (e) {
 		if (e instanceof ZodError) {
-			console.log(e.flatten())
 			const { fieldErrors: errors } = e.flatten();
 			const { email } = formData;
 			return {
@@ -80,14 +85,14 @@ export const actions: Actions = {
 			console.error(error);
 			return fail(error.cause as number, { error: error.message });
 		}
-		const { user, accessToken, refreshToken } = authResponse;
-		event.locals.user = { ...user, accessToken };
+		const { refreshToken} = authResponse;
 		event.cookies.set('refresh_token', refreshToken, {
 			path: '/',
 			httpOnly: true,
 			sameSite: 'lax',
 			secure: true
 		});
-		return redirect(302, '/dashboard');
+
+		return redirect(301, '/dashboard');
 	}
 };
