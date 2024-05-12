@@ -3,3 +3,5 @@
     
     export let data: PageData;
 </script>
+
+<h1>Specific User Page</h1>
