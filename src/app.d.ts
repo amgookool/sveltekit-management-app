@@ -5,7 +5,6 @@
 declare namespace App {
 	interface Locals {
 		user: {
-			accessToken: string;
 			username: string;
 			avatar: string;
 			id: string;
@@ -13,13 +12,15 @@ declare namespace App {
 			userRole: string;
 			firstName: string;
 			lastName: string;
+			avatar: string;
 			isLocked: boolean;
 			isVerified: boolean;
 			isDeleted: boolean;
 			forcePasswordChange: boolean;
+			accessToken: string;
 		} | null;
 	}
-	// interface PageData {}
+	// interface PageData { }
 	// interface Error {}
 	// interface Platform {}
 }
