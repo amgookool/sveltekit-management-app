@@ -4,8 +4,8 @@ import { ZodError, z } from 'zod';
 import { fail, type RequestEvent } from '@sveltejs/kit';
 
 interface resetPasswordFormType {
-    password:string;
-    confirmPassword:string;
+	password: string;
+	confirmPassword: string;
 }
 
 
@@ -16,15 +16,15 @@ const resetPasswordUpdateFormSchema = z
 				required_error: 'Password is required',
 				invalid_type_error: 'Password must be a string of alphanumeric characters'
 			})
-			.min(1, { message: 'Confirm password is required' })
-			.min(8, { message: 'Confirm Password must be at least 8 characters' })
-			.regex(new RegExp('^(?=.*[0-9])$'), { message: 'Password must contain a number' })
-			.regex(new RegExp('^(?=.*[A-Z])$'), { message: 'Password must contain an uppercase letter' })
-			.regex(new RegExp('^(?!.*\\s)$'), { message: 'Password must not contain any whitespace' })
-			.regex(new RegExp('^(?=.*[@#$%^&+=!])$'), {
-				message: 'Password must contain a special character'
-			})
-			.trim(),
+			.min(1, { message: 'Password is required' })
+			.min(8, { message: 'Password must be at least 8 characters' })
+			.trim()
+			.refine((value) => /[\W_]/.test(value),
+				'Password must contain a special character'
+			)
+			.refine((value) => /(?=.*[a-z])(?=.*[A-Z])/.test(value),
+				'Password must contain a capital letter'
+			),
 		confirmPassword: z
 			.string({
 				required_error: 'Confirm password is required',
@@ -33,18 +33,12 @@ const resetPasswordUpdateFormSchema = z
 			.min(1, { message: 'Confirm password is required' })
 			.min(8, { message: 'Confirm Password must be at least 8 characters' })
 			.trim()
-			.refine((value) => /^(?=.*[0-9])$/.test(value), 
-				'Confirm password must contain a number'
+			.refine((value) => /[\W_]/.test(value),
+				'Password must contain a special character'
 			)
-			.refine((value) => /^(?=.*[A-Z])$/.test(value), 
-				'Confirm password must contain an uppercase letter'
-			)
-			.refine((value) => /^(?!.*\\s)$/.test(value), 
-				'Confirm password must not contain any whitespace'
-			)
-			.refine((value) => /^(?=.*[@#$%^&+=!])$/.test(value), 
-				'Confirm password must contain a special character'
-			)
+			.refine((value) => /(?=.*[a-z])(?=.*[A-Z])/.test(value),
+				'Password must contain a capital letter'
+			),
 	})
 	.superRefine(({ password, confirmPassword }, ctx: z.RefinementCtx) => {
 		if (password != confirmPassword) {
@@ -93,7 +87,7 @@ export const actions: Actions = {
 		if (!processedForm?.success) {
 			return processedForm;
 		}
-		const { password } = processedForm.data as resetPasswordFormType ;
+		const { password } = processedForm.data as resetPasswordFormType;
 
 		try {
 			const message = await perform_password_reset_change({
