@@ -18,7 +18,8 @@ export const perform_refresh = (event: RequestEvent): Promise<UserTypes.Authoriz
     })
         .then((response: Response) => {
             if (response.ok) {
-                return response.json() as Promise<UserTypes.AuthorizationResponse>; // Specify the return type
+                const result = response.json();
+                return result as Promise<UserTypes.AuthorizationResponse>; // Specify the return type
             } else {
                 switch (response.status) {
                     case 404:
@@ -32,6 +33,7 @@ export const perform_refresh = (event: RequestEvent): Promise<UserTypes.Authoriz
             return data;
         })
         .catch((error) => {
+            event.cookies.delete('refresh_token', { path: '/' });
             throw new Error(error.message);
         });
 };

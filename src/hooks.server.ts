@@ -1,6 +1,10 @@
 // import { koolkeyzAPIFetch } from "$hooks/apiRequests.hooks";
 import {
-    rootPageHook, loginPageHook, githubSignInPathHook
+    dashboardPageHook,
+    githubSignInPathHook,
+    loginPageHook,
+    resetPasswordPageHook,
+    rootPageHook
 } from "@/hooks/authentication.hooks";
 import type { Handle } from "@sveltejs/kit";
 import { sequence } from "@sveltejs/kit/hooks";
@@ -9,5 +13,7 @@ import { sequence } from "@sveltejs/kit/hooks";
 export const handle: Handle = sequence(
     rootPageHook,
     loginPageHook,
-    githubSignInPathHook
+    githubSignInPathHook,
+    dashboardPageHook,
+    resetPasswordPageHook
 );
