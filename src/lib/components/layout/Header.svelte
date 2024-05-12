@@ -1,17 +1,29 @@
 <script lang="ts">
 	import ThemeSwitcher from '$lib/components/layout/ThemeSwitcher.svelte';
+	import * as Avatar from '$lib/components/ui/avatar/index.js';
 	import { Badge } from '$lib/components/ui/badge/index.js';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
 	import { Input } from '$lib/components/ui/input/index.js';
 	import * as Sheet from '$lib/components/ui/sheet/index.js';
+	import { changePasswordModalState } from '@/components/modals/state';
 	import type { SideBarNavItem } from '@/types/components';
+	import type { UserTypes } from '@/types/users';
 	import { cn } from '@/utils';
-	import CircleUser from 'lucide-svelte/icons/circle-user';
 	import Menu from 'lucide-svelte/icons/menu';
 	import Search from 'lucide-svelte/icons/search';
+	import { sideBarActiveState } from './states';
 
 	export let nav_links: SideBarNavItem[];
+	export let user: UserTypes.AuthorizedUser | null;
+
+	const generateNameAbbreviation = () => {
+		if (user?.firstName && user?.lastName) {
+			return `${user.firstName[0]}${user.lastName[0]}`;
+		} else {
+			return `${user?.userRole[0]}`;
+		}
+	};
 </script>
 
 <header class="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
@@ -29,8 +41,9 @@
 				</a>
 				{#each nav_links as { icon, text, href, count }, i}
 					<a
+						on:click={() => sideBarActiveState.set(href)}
 						{href}
-						class="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
+						class={`mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground ${$sideBarActiveState == href && 'bg-muted'}`}
 					>
 						<svelte:component this={icon} class="h-5 w-5" />
 						{text}
@@ -61,19 +74,44 @@
 		<DropdownMenu.Root>
 			<DropdownMenu.Trigger asChild let:builder>
 				<Button builders={[builder]} variant="secondary" size="icon" class="rounded-full">
-					<CircleUser class="h-5 w-5" />
+					<Avatar.Root>
+						<Avatar.Image src={`${user?.avatar ?? ''}`} alt="avatar" />
+						<Avatar.Fallback>{generateNameAbbreviation()}</Avatar.Fallback>
+					</Avatar.Root>
 					<span class="sr-only">Toggle user menu</span>
 				</Button>
 			</DropdownMenu.Trigger>
 			<DropdownMenu.Content align="end">
 				<DropdownMenu.Label>My Account</DropdownMenu.Label>
 				<DropdownMenu.Separator />
-				<DropdownMenu.Item>Settings</DropdownMenu.Item>
-				<DropdownMenu.Item>Support</DropdownMenu.Item>
+				<DropdownMenu.Item>
+					<a
+						on:click={() => sideBarActiveState.set(`/dashboard`)}
+						class="container text-center hover:text-primary"
+						href={`/dashboard/${user?.id}`}
+					>
+						View Profile
+					</a>
+				</DropdownMenu.Item>
+				<DropdownMenu.Item>
+					<button
+						class="container text-center hover:text-primary"
+						type="button"
+						on:click={() => {
+							changePasswordModalState.open();
+						}}
+					>
+						Change Password
+					</button>
+				</DropdownMenu.Item>
 				<DropdownMenu.Separator />
 				<DropdownMenu.Item>
-					<form action="/dashboard?/logout" method="post">
-						<Button type="submit" size="icon" variant="ghost">Logout</Button>
+					<form
+						class={`w-full text-center hover:text-primary`}
+						action="/dashboard?/logout"
+						method="post"
+					>
+						<button type="submit" class={`container w-full`}> Logout </button>
 					</form>
 				</DropdownMenu.Item>
 			</DropdownMenu.Content>

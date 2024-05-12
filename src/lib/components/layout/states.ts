@@ -1,7 +1,6 @@
 import { writable } from "svelte/store";
 
-
-const createSideBarToggleState = () => {
+const createSideBarCollapseState = () => {
     const { subscribe, set, update } = writable<boolean>(false);
     return {
         subscribe,
@@ -11,16 +10,16 @@ const createSideBarToggleState = () => {
 }
 
 const createSideBarActiveState = () => {
-    const { subscribe, set, update } = writable<boolean>(false);
+    const { subscribe, set, update } = writable<string>('/dashboard');
     return {
         subscribe,
         set,
-        toggle: () => update(state => !state),
+        update,
     }
 };
 
 
 
-export const sideBarToggleState = createSideBarToggleState();
+export const sideBarCollapseState = createSideBarCollapseState();
 
 export const sideBarActiveState = createSideBarActiveState();
