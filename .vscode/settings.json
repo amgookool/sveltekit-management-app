@@ -19,5 +19,7 @@
         "**/Thumbs.db": true,
         "**/.svelte-kit": true,
         "**/node_modules": true,
-    }
+    },
+    "typescript.suggest.autoImports": false,
+    "javascript.suggest.autoImports": false,
 }
