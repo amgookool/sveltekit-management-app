@@ -38,9 +38,12 @@ const processResetFormEvent = async (event: RequestEvent) => {
 };
 
 export const load = (async () => {
+
+	const pageTitle = 'Koolkeyz Management - Reset Password';
+
 	return {
 		props: {
-			title: 'Koolkeyz Management - Reset Password'
+			title: pageTitle
 		}
 	};
 }) satisfies PageServerLoad;

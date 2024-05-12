@@ -9,10 +9,12 @@
 	import { ArrowLeftToLine, CircleAlert } from 'lucide-svelte';
 	import { toast } from 'svelte-sonner';
 	import { goto } from '$app/navigation';
+	import { page } from '$app/stores';
+	import { onMount } from 'svelte';
 
 	export let data: PageData;
 	export let form: ActionData;
-	
+
 	$: if (form?.error) {
 		toast.error(form?.error);
 	}
@@ -20,6 +22,13 @@
 		toast.success(`Password reset link has been sent to ${form?.data.email}`);
 		goto('/login');
 	}
+	onMount(async () => {
+		if ($page.url.search) {
+			const queryParams = new URLSearchParams($page.url.search);
+			const error = queryParams.get('error');
+			if (error && error.includes('invalid')) toast.error('Invalid reset token.');
+		}
+	});
 </script>
 
 <svelte:head>
@@ -68,7 +77,9 @@
 		<Card.Footer>
 			<a class="" href="/login">
 				<Button variant="ghost" type="button">
-					<span class={cn('flex flex-row items-center hover:text-primary  hover:animate-arrow-left')}>
+					<span
+						class={cn('flex flex-row items-center hover:text-primary  hover:animate-arrow-left')}
+					>
 						<ArrowLeftToLine size="24" strokeWidth="2" />
 						<p>Back to Login</p>
 					</span>
